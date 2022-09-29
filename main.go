@@ -1,53 +1,22 @@
+/*
+Copyright © 2022 Shain D shaindesa@gmail.com
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 package main
 
-import (
-	"encoding/json"
-	"fmt"
-	"io/ioutil"
-	"log"
-	"net/http"
-)
-
-type WordInfo struct{
-	Word string `json:"word"`
-	Meanings []Meaning `json:"meanings"`
-}
-
-type Meaning struct{
-	PartOfSpeech string `json:"partOfSpeech"`
-	Definitions []Definition `json:"definitions"`
-}
-
-type Definition struct{
-	Val string `json:"definition"`
-	Example string `json:"example"`
-}
+import "github.com/shaindesa/definition-space/cmd"
 
 func main() {
-	word := "hello"
-	url := "https://api.dictionaryapi.dev/api/v2/entries/en/" + word
-	
-	res, err := http.Get(url)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	body, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	var w []WordInfo
-
-	json.Unmarshal(body, &w)
-	count := 0
-
-	for _, wordtype := range w[0].Meanings{
-		for _, definition := range wordtype.Definitions{
-			count++
-			fmt.Printf("Definition %v\n", count)
-			fmt.Println(definition.Val)
-			fmt.Printf("%v\n\n", definition.Example)
-		}
-	}
+	cmd.Execute()
 }
