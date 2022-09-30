@@ -67,18 +67,25 @@ stopreading:
 				fmt.Printf("Definition %v\n", count)
 				fmt.Println(wordtype.PartOfSpeech)
 				fmt.Println(definition.Val)
-				fmt.Printf("%v\n", definition.Example)
+				if definition.Example != ""{
+					fmt.Printf("Example: \"%v\"\n", definition.Example)
+				} else{
+					fmt.Printf("(Example not provided)\n")
+				}
+
+				// Ask user whether they want to continue
 				validResponse := false
 
 				for validResponse != true{
 					fmt.Println("(Press ENTER to continue listing definitions, or type anything else to exit)")
 					var response string
-					_, err := fmt.Scanf("%v", &response)
-					if err != nil{
+					fmt.Scanln(&response)
+					if response == ""{
 						validResponse = true
 						continue
+					} else{
+						break stopreading
 					}
-					break stopreading
 				}
 
 
