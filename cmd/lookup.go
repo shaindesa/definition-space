@@ -38,10 +38,11 @@ var lookupCmd = &cobra.Command{
 	For example:
 	definition-space lookup apple
 	-will look up the definition of 'apple' and return various definitions in STDout`,
+	Args: cobra.ExactArgs(1),
 
 
 	Run: func(cmd *cobra.Command, args []string) {
-		word := "hello"
+		word := args[0]
 		url := "https://api.dictionaryapi.dev/api/v2/entries/en/" + word
 		
 		res, err := http.Get(url)
@@ -66,6 +67,7 @@ var lookupCmd = &cobra.Command{
 				fmt.Println(wordtype.PartOfSpeech)
 				fmt.Println(definition.Val)
 				fmt.Printf("%v\n\n", definition.Example)
+				fmt.Scanln()
 			}
 		}
 	},
