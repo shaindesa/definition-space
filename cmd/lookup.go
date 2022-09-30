@@ -60,14 +60,28 @@ var lookupCmd = &cobra.Command{
 		json.Unmarshal(body, &w)
 		count := 0
 	
+stopreading:
 		for _, wordtype := range w[0].Meanings{
 			for _, definition := range wordtype.Definitions{
 				count++
 				fmt.Printf("Definition %v\n", count)
 				fmt.Println(wordtype.PartOfSpeech)
 				fmt.Println(definition.Val)
-				fmt.Printf("%v\n\n", definition.Example)
-				fmt.Scanln()
+				fmt.Printf("%v\n", definition.Example)
+				validResponse := false
+
+				for validResponse != true{
+					fmt.Println("(Press ENTER to continue listing definitions, or type anything else to exit)")
+					var response string
+					_, err := fmt.Scanf("%v", &response)
+					if err != nil{
+						validResponse = true
+						continue
+					}
+					break stopreading
+				}
+
+
 			}
 		}
 	},
