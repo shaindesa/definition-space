@@ -74,21 +74,12 @@ stopreading:
 				}
 
 				// Ask user whether they want to continue
-				validResponse := false
-
-				for validResponse != true{
-					fmt.Println("(Press ENTER to continue listing definitions, or type anything else to exit)")
-					var response string
-					fmt.Scanln(&response)
-					if response == ""{
-						validResponse = true
-						continue
-					} else{
-						break stopreading
-					}
+				fmt.Println("(Press ENTER to continue listing definitions, or type anything else to exit)")
+				var response string 
+				fmt.Scanln(&response)
+				if response != ""{
+					break stopreading
 				}
-
-
 			}
 		}
 	},
