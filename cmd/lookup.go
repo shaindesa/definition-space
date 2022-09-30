@@ -15,10 +15,10 @@ import (
 
 type WordInfo struct{
 	Word string `json:"word"`
-	Meanings []Meaning `json:"meanings"`
+	WordGroup []WordGroup `json:"meanings"`
 }
 
-type Meaning struct{
+type WordGroup struct{
 	PartOfSpeech string `json:"partOfSpeech"`
 	Definitions []Definition `json:"definitions"`
 }
@@ -32,40 +32,66 @@ type Definition struct{
 // lookupCmd represents the lookup command
 var lookupCmd = &cobra.Command{
 	Use:   "lookup",
-	Short: "Look up definitions. Does not commit anything to memory.",
-	Long: `Use this command alongside a single real English word to lookup the word's definition(s)
-	in the dictionary.
+	Short: "Looks up definitions of words. Does not commit anything to memory.",
+	Long: `
+		definition-space lookup
+	Use this command alongside a single real English word to lookup the word's definition(s) in the dictionary.
+
+	Usage: 
+	definition-space lookup [word]
+
 	For example:
-	definition-space lookup apple
-	-will look up the definition of 'apple' and return various definitions in STDout`,
+	definition-space lookup apple`,
+
 	Args: cobra.ExactArgs(1),
 
 
 	Run: func(cmd *cobra.Command, args []string) {
+		// construct URL
 		word := args[0]
 		url := "https://api.dictionaryapi.dev/api/v2/entries/en/" + word
 		
+		// get API data
 		res, err := http.Get(url)
 		if err != nil {
-			log.Fatal(err)
+			fmt.Println("Connection error. Cannot connect to dictionary API. Check internet connectivity.")
+			return
 		}
 	
+		// read API data into variable
 		body, err := ioutil.ReadAll(res.Body)
 		if err != nil {
 			log.Fatal(err)
 		}
 	
+		// unmarshal JSON response into w
 		var w []WordInfo
+		err = json.Unmarshal(body, &w)
+		if err != nil {
+			fmt.Println("Error: Word cannot be found in dictionary.")
+			return
+		}
+		
+		
+		//count how many definitions found
+		defcount := 0
+		for _, x := range w[0].WordGroup{
+			for range x.Definitions {
+				defcount++
+			}
+		}
 	
-		json.Unmarshal(body, &w)
+
+		//loop through the definitions, print them out
 		count := 0
-	
+
 stopreading:
-		for _, wordtype := range w[0].Meanings{
-			for _, definition := range wordtype.Definitions{
+		for _, wordgroup := range w[0].WordGroup{
+			for _, definition := range wordgroup.Definitions{
+
 				count++
-				fmt.Printf("Definition %v\n", count)
-				fmt.Println(wordtype.PartOfSpeech)
+				fmt.Printf("Definition %v / %v\n", count, defcount)
+				fmt.Println(wordgroup.PartOfSpeech)
 				fmt.Println(definition.Val)
 				if definition.Example != ""{
 					fmt.Printf("Example: \"%v\"\n", definition.Example)
@@ -74,8 +100,8 @@ stopreading:
 				}
 
 				// Ask user whether they want to continue
+				var response string
 				fmt.Println("(Press ENTER to continue listing definitions, or type anything else to exit)")
-				var response string 
 				fmt.Scanln(&response)
 				if response != ""{
 					break stopreading
