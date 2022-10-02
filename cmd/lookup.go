@@ -28,6 +28,45 @@ type Definition struct{
 	Example string `json:"example"`
 }
 
+type Appendable struct{
+	Val string
+}
+
+func GetDefs(word string) ([]WordInfo, int, error){
+			// construct URL
+			url := "https://api.dictionaryapi.dev/api/v2/entries/en/" + word
+			
+			// get API data
+			res, err := http.Get(url)
+			if err != nil {
+				fmt.Println("Connection error. Cannot connect to dictionary API. Check internet connectivity.")
+				return nil, 0, err
+			}
+		
+			// read API data into variable
+			body, err := ioutil.ReadAll(res.Body)
+			if err != nil {
+				log.Fatal(err)
+			}
+		
+			// unmarshal JSON response into w
+			var w []WordInfo
+			err = json.Unmarshal(body, &w)
+			if err != nil {
+				fmt.Println("Error: Word cannot be found in dictionary.")
+				return nil, 0, err
+			}
+			
+			//count how many definitions found
+			defcount := 0
+			for _, x := range w[0].WordGroup{
+				for range x.Definitions {
+					defcount++
+				}
+			}
+
+			return w, defcount, nil
+} 
 
 // lookupCmd represents the lookup command
 var lookupCmd = &cobra.Command{
@@ -47,41 +86,11 @@ var lookupCmd = &cobra.Command{
 
 
 	Run: func(cmd *cobra.Command, args []string) {
-		// construct URL
-		word := args[0]
-		url := "https://api.dictionaryapi.dev/api/v2/entries/en/" + word
-		
-		// get API data
-		res, err := http.Get(url)
-		if err != nil {
-			fmt.Println("Connection error. Cannot connect to dictionary API. Check internet connectivity.")
-			return
-		}
-	
-		// read API data into variable
-		body, err := ioutil.ReadAll(res.Body)
-		if err != nil {
+
+		w, defcount, err := GetDefs(args[0])
+		if err != nil{
 			log.Fatal(err)
 		}
-	
-		// unmarshal JSON response into w
-		var w []WordInfo
-		err = json.Unmarshal(body, &w)
-		if err != nil {
-			fmt.Println("Error: Word cannot be found in dictionary.")
-			return
-		}
-		
-		
-		//count how many definitions found
-		defcount := 0
-		for _, x := range w[0].WordGroup{
-			for range x.Definitions {
-				defcount++
-			}
-		}
-	
-
 		//loop through the definitions, print them out
 		count := 0
 
@@ -94,9 +103,9 @@ stopreading:
 				fmt.Println(wordgroup.PartOfSpeech)
 				fmt.Println(definition.Val)
 				if definition.Example != ""{
-					fmt.Printf("Example: \"%v\"\n", definition.Example)
+					fmt.Printf("Example: \"%v\"\n\n", definition.Example)
 				} else{
-					fmt.Printf("(Example not provided)\n")
+					fmt.Printf("(Example not provided)\n\n")
 				}
 
 				// Ask user whether they want to continue
