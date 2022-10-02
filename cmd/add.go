@@ -62,7 +62,8 @@ stopreading:
 						if err != nil{
 							log.Fatal("Error adding word to dictionary")
 						}
-						continue
+						fmt.Printf("Added %v to your local dictionary! Use 'definition-space mydict' to view\n", args[0])
+						break stopreading
 					default:
 						break stopreading
 				}

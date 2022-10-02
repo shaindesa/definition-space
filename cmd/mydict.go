@@ -62,7 +62,13 @@ var mydictCmd = &cobra.Command{
 			fmt.Println("You don't have a local dictionary yet. Get started by calling `definition-space add [word]`")
 			return
 		}
-		fmt.Println(words)
+
+		for key, val := range words{
+			fmt.Printf("%v\t'%v'\n", key, val.Value)
+			fmt.Printf("%v\n", val.POS)
+			fmt.Printf("%v\n\n", val.Definition)
+
+		}
 			
 	},
 }
