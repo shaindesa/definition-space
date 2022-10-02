@@ -13,24 +13,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-type WordInfo struct{
-	Word string `json:"word"`
-	WordGroup []WordGroup `json:"meanings"`
-}
-
-type WordGroup struct{
-	PartOfSpeech string `json:"partOfSpeech"`
-	Definitions []Definition `json:"definitions"`
-}
-
-type Definition struct{
-	Val string `json:"definition"`
-	Example string `json:"example"`
-}
-
-type Appendable struct{
-	Val string
-}
 
 func GetDefs(word string) ([]WordInfo, int, error){
 			// construct URL

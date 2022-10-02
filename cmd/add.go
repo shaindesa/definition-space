@@ -4,10 +4,8 @@ Copyright © 2022 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
-	"os"
 
 	"github.com/spf13/cobra"
 )
@@ -58,7 +56,13 @@ stopreading:
 					case response == "":
 						continue
 					case response == "a":
-						err := AddWord(args[0], definition, wordgroup.PartOfSpeech)
+						newword := WordData{
+							Word: args[0],
+							POS: wordgroup.PartOfSpeech,
+							Example: definition.Example,
+							Definition: definition.Val}
+
+						err := AddWord(newword)
 						if err != nil{
 							log.Fatal("Error adding word to dictionary")
 						}
@@ -84,38 +88,4 @@ func init() {
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// addCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-}
-
-func AddWord(word string, definition Definition, pos string) error{
-	newword := WordData{
-		Value: word,
-		POS: pos,
-		Definition: definition.Val}
-
-
-	filename := os.Getenv("HOME") + "/.definition-space/dictionary.json"
-
-	var words []WordData
-	words, err := readJSON(filename)
-	if err != nil{
-		fmt.Println("Cannot find data file. Creating new data file.")
-		words = []WordData{}
-	}
-
-	words = append(words, newword)
-
-	jsondata, err := json.Marshal(words)
-	if err != nil{
-		log.Fatal(err)
-	}
-
-	return writeJSON(filename, jsondata)
-}
-
-func writeJSON(filename string, jsondata []byte) error{
-	err := os.WriteFile(filename, jsondata, 0644)
-	if err != nil{
-		return err
-	}
-	return nil
 }

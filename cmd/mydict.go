@@ -4,46 +4,11 @@ Copyright © 2022 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"encoding/json"
 	"fmt"
 	"os"
 
 	"github.com/spf13/cobra"
 )
-
-type WordData struct{
-	Value string `json:"value"`
-	POS string `json:"partofspeech"`
-	Definition string `json:"definition"`
-}
-
-
-func CheckDir() {
-	homedir := os.Getenv("HOME")
-	dir := homedir + "/.definition-space/"
-	_, err := os.Stat(dir)
-	if os.IsNotExist(err){
-		fmt.Println("Local Dictionary not found. Creating a new directory for your dictionary.")
-		os.Chdir(homedir)
-		os.Mkdir(".definition-space", 0722)
-		return
-	}
-}
-
-func readJSON(fileName string) ([]WordData, error){
-	file, err := os.Open(fileName)
-	if err != nil{
-		return nil, err
-	}
-	defer file.Close()
-
-	decoder := json.NewDecoder(file)
-	outarr := []WordData{}
-
-	decoder.Decode(&outarr)
-
-	return outarr, nil
-}
 
 // mydictCmd represents the mydict command
 var mydictCmd = &cobra.Command{
@@ -57,17 +22,20 @@ var mydictCmd = &cobra.Command{
 		CheckDir()
 		file := os.Getenv("HOME") + "/.definition-space/dictionary.json"
 
-		words, err := readJSON(file)
+		words, err := ReadJSON(file)
 		if err != nil{
 			fmt.Println("You don't have a local dictionary yet. Get started by calling `definition-space add [word]`")
 			return
 		}
 
 		for key, val := range words{
-			fmt.Printf("%v\t'%v'\n", key, val.Value)
+			fmt.Printf("%v\t'%v'\n", key, val.Word)
 			fmt.Printf("%v\n", val.POS)
-			fmt.Printf("%v\n\n", val.Definition)
-
+			fmt.Printf("%v\n", val.Definition)
+			if val.Example != ""{
+				fmt.Printf("Example: \"%v\"", val.Example)
+			}
+			fmt.Println()
 		}
 			
 	},
