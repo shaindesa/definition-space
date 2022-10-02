@@ -24,7 +24,6 @@ to quickly create a Cobra application.`,
 	Args: cobra.ExactArgs(1),
 
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("add called")
 		CheckDir()
 
 		w, defcount, err := GetDefs(args[0])
