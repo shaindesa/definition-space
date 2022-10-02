@@ -33,7 +33,7 @@ var mydictCmd = &cobra.Command{
 			fmt.Printf("%v\n", val.POS)
 			fmt.Printf("%v\n", val.Definition)
 			if val.Example != ""{
-				fmt.Printf("Example: \"%v\"", val.Example)
+				fmt.Printf("Example: \"%v\"\n", val.Example)
 			}
 			fmt.Println()
 		}

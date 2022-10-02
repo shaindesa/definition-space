@@ -4,51 +4,11 @@ Copyright © 2022 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"log"
-	"net/http"
 
 	"github.com/spf13/cobra"
 )
-
-
-func GetDefs(word string) ([]WordInfo, int, error){
-			// construct URL
-			url := "https://api.dictionaryapi.dev/api/v2/entries/en/" + word
-			
-			// get API data
-			res, err := http.Get(url)
-			if err != nil {
-				fmt.Println("Connection error. Cannot connect to dictionary API. Check internet connectivity.")
-				return nil, 0, err
-			}
-		
-			// read API data into variable
-			body, err := ioutil.ReadAll(res.Body)
-			if err != nil {
-				log.Fatal(err)
-			}
-		
-			// unmarshal JSON response into w
-			var w []WordInfo
-			err = json.Unmarshal(body, &w)
-			if err != nil {
-				fmt.Println("Error: Word cannot be found in dictionary.")
-				return nil, 0, err
-			}
-			
-			//count how many definitions found
-			defcount := 0
-			for _, x := range w[0].WordGroup{
-				for range x.Definitions {
-					defcount++
-				}
-			}
-
-			return w, defcount, nil
-} 
 
 // lookupCmd represents the lookup command
 var lookupCmd = &cobra.Command{
