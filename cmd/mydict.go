@@ -31,18 +31,17 @@ var mydictCmd = &cobra.Command{
 
 		for key, val := range words{
 			daysSince := (time.Now().Unix() - val.TimeAdded) / 86400
-			if daysSince == 1{
-				fmt.Printf("%v\t'%v'\t\tAdded %v day ago\n", key+1, val.Word, daysSince)
-			} else {
-				fmt.Printf("%v\t'%v'\t\tAdded %v days ago\n", key+1, val.Word, daysSince)
-			}
-
+			fmt.Printf("%v\t\"%v\"\n", key+1, val.Word)
 			fmt.Printf("%v\n", val.POS)
 			fmt.Printf("%v\n", val.Definition)
 			if val.Example != ""{
 				fmt.Printf("Example: \"%v\"\n", val.Example)
 			}
-			fmt.Println()
+			if daysSince == 1{
+				fmt.Printf("(Added %v day ago)\n\n", daysSince)
+			} else {
+				fmt.Printf("(Added %v days ago)\n\n",  daysSince)
+			}
 		}
 			
 	},
