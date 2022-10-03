@@ -23,7 +23,7 @@ var mydictCmd = &cobra.Command{
 		file := os.Getenv("HOME") + "/.definition-space/dictionary.json"
 
 		words, err := ReadJSON(file)
-		if err != nil{
+		if err != nil || len(words) == 0 {
 			fmt.Println("You don't have a local dictionary yet. Get started by calling `definition-space add [word]`")
 			return
 		}
