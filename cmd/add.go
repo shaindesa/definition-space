@@ -6,6 +6,7 @@ package cmd
 import (
 	"fmt"
 	"log"
+	"time"
 
 	"github.com/spf13/cobra"
 )
@@ -59,7 +60,9 @@ stopreading:
 							Word: args[0],
 							POS: wordgroup.PartOfSpeech,
 							Example: definition.Example,
-							Definition: definition.Val}
+							Definition: definition.Val,
+							TimeAdded: time.Now().Unix(),
+							Learns: 0}
 
 						err := AddWord(newword)
 						if err != nil{

@@ -5,6 +5,8 @@ type WordData struct{
 	POS string `json:"partofspeech"`
 	Definition string `json:"definition"`
 	Example string `json:"example"`
+	TimeAdded int64 `json:"timeadded"`
+	Learns int `json:"learns"`
 }
 
 type WordInfo struct{
