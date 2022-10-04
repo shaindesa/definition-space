@@ -1,6 +1,3 @@
-/*
-Copyright © 2022 NAME HERE <EMAIL ADDRESS>
-*/
 package cmd
 
 import (
@@ -14,16 +11,15 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// learnCmd represents the learn command
 var learnCmd = &cobra.Command{
 	Use:   "learn",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Short: "Bring up to five words from your dictionary to help memorise them",
+	Long: `learn is used to help you memorise the words you have added to your local dictionary. Call learn with 'definition-space learn' and you will be given up to five random words in your dictionary.
+Each word in your dictionary has a JSON tag of 'learns.' Everytime learn selects a word it adds 1 to that total. When total learns reaches 4, the word will no longer show up in learn.
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+Usage: definition-space learn
+
+`,
 	Run: func(cmd *cobra.Command, args []string) {
 		CheckDir()
 		file := os.Getenv("HOME") + "/.definition-space/dictionary.json"
@@ -101,14 +97,4 @@ to quickly create a Cobra application.`,
 
 func init() {
 	rootCmd.AddCommand(learnCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// learnCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// learnCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

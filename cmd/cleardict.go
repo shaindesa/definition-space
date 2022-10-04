@@ -1,6 +1,3 @@
-/*
-Copyright © 2022 NAME HERE <EMAIL ADDRESS>
-*/
 package cmd
 
 import (
@@ -11,16 +8,14 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// cleardictCmd represents the cleardict command
 var cleardictCmd = &cobra.Command{
 	Use:   "cleardict",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Clear all entries in your local dictionary.",
+	Long: `Replaces the JSON in $HOME/.definition-space/dictionary.json with "[]", effectively clearing all entries from your local dictionary. Will ask user for confirmation.
+	
+	Usage: 'definition-space cleardict'
+	
+	`,
 	Run: func(cmd *cobra.Command, args []string) {
 		CheckDir()
 		
@@ -44,14 +39,4 @@ to quickly create a Cobra application.`,
 
 func init() {
 	rootCmd.AddCommand(cleardictCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// cleardictCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// cleardictCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
