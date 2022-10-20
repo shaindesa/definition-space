@@ -54,10 +54,12 @@ Usage: definition-space learn
 		}
 
 		fmt.Printf("\nWord learning mode shows you up to five randomly selected words from your local dictionary. Go over your definitions here to help remember them!\n\n")
+		fmt.Printf("Info: Press ENTER after word shown to show definition\n\n")
 		
 		for k, v := range learning_words{
 			daysSince := (time.Now().Unix() - v.TimeAdded) / 86400
 			fmt.Printf("(%v/%v)\t\"%v\"\n", k+1, len(learning_words), v.Word)
+			fmt.Scanln()
 			fmt.Println(v.Definition)
 			if v.Example != ""{
 				fmt.Println(v.Example)
