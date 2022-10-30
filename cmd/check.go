@@ -45,7 +45,7 @@ definition-space check [word]
 			}
 		}
 
-		if found == false{
+		if !found{
 			fmt.Println("Word not found in local dictionary")
 		}
 	},

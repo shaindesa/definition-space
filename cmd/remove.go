@@ -37,7 +37,7 @@ var removeCmd = &cobra.Command{
 			}
 		}
 
-		if found == false{
+		if !found{
 			fmt.Printf("Could not find word %v in local dictionary.\n\n", args[0])
 			return
 		}
