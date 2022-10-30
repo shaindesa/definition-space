@@ -47,6 +47,11 @@ Removes word from user's local dictionary.
 
 Prints all words and their definitions in the user's local dictionary to the output.
 
+### words
+`definition-space words`
+
+Prints all words separated by a comma and a space to the output.
+
 ### cleardict
 `definition-space cleardict`
 
