@@ -53,7 +53,6 @@ func CheckDir() {
 		fmt.Println("Local Dictionary not found. Creating a new directory for your dictionary.")
 		os.Chdir(homedir)
 		os.Mkdir(".definition-space", 0722)
-		return
 	}
 }
 
